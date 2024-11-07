@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matkul Table</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mata Kuliah</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Course</th>
+                <th>Lecturer</th>
+                <th>Code</th>
+            </tr>
+        </thead>
+        <tbody id="matkulTable">
+        </tbody>
+    </table>
+
+    <script>
+        axios.get('http://192.168.0.5:5000/api/v1/resources/matkul/all')
+            .then(function (response) {
+                var tableBody = document.getElementById('matkulTable');
+                response.data.forEach(function (item) {
+                    var row = document.createElement('tr');
+                    
+                    var idCell = document.createElement('td');
+                    idCell.textContent = item.id;
+                    row.appendChild(idCell);
+                    
+                    var courseCell = document.createElement('td');
+                    courseCell.textContent = item.course;
+                    row.appendChild(courseCell);
+                    
+                    var lectCell = document.createElement('td');
+                    lectCell.textContent = item.lect;
+                    row.appendChild(lectCell);
+                    
+                    var codeCell = document.createElement('td');
+                    codeCell.textContent = item.code;
+                    row.appendChild(codeCell);
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(function (error) {
+                console.error('There was an error fetching the data:', error);
+            });
+    </script>
+</body>
+</html>
